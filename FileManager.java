@@ -67,12 +67,7 @@ public class FileManager {
                 String[] p = line.split(",");
                 Passenger pass = new Passenger(p[2], Integer.parseInt(p[3]), p[4]);
                 int seat = Integer.parseInt(p[5]);
-                Ticket t;
-                if (p[6].equals("AC")) {
-                    t = new ACTicket(p[0], p[1], pass, seat);
-                } else {
-                    t = new SleeperTicket(p[0], p[1], pass, seat);
-                }
+                Ticket t = Ticket.create(p[6], p[0], p[1], pass, seat);
                 t.setStatus(p[7]);
                 list.add(t);
             }
