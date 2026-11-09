@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -38,8 +41,23 @@ public class MainApp extends Application {
         addColumn(trainTable, "Departure", "departureTime");
         addColumn(trainTable, "Total Seats", "totalSeats");
         addColumn(trainTable, "Available", "availableSeats");
-        refreshTables();
-        VBox box = new VBox(10, trainTable);
+       refreshTables();
+
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search by source or destination (e.g. Delhi)");
+        searchField.textProperty().addListener((obs, oldValue, newValue) -> {
+            String key = newValue.trim().toLowerCase();
+            List<Train> result = new ArrayList<>();
+            for (Train t : service.getAllTrains()) {
+                if (t.getSource().toLowerCase().contains(key)
+                        || t.getDestination().toLowerCase().contains(key)) {
+                    result.add(t);
+                }
+            }
+            trainTable.setItems(FXCollections.observableArrayList(result));
+        });
+
+        VBox box = new VBox(10, searchField, trainTable);
         box.setPadding(new Insets(10));
         return box;
     }
