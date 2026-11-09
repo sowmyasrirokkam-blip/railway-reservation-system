@@ -66,12 +66,7 @@ public class ReservationService {
         ticketCounter++;
         String ticketNo = "TKT" + ticketCounter;
         Passenger p = new Passenger(name.trim().replace(",", " "), age, gender);
-        Ticket ticket;
-        if (classType.equals("AC")) {
-            ticket = new ACTicket(ticketNo, trainNo, p, seat);
-        } else {
-            ticket = new SleeperTicket(ticketNo, trainNo, p, seat);
-        }
+       Ticket ticket = Ticket.create(classType, ticketNo, trainNo, p, seat);
         tickets.add(ticket);
         FileManager.saveTickets(tickets);
         FileManager.saveTicketText(ticketNo, generateTicketText(ticket));
